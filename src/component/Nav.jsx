@@ -17,6 +17,11 @@ function Nav() {
                     모든 상품
                 </Link>
             </nav>
+
+            <div className='userWrap'>
+                <button className='loginBtn'>Login</button>
+                <button className='logoutBtn'>LogOut</button>
+            </div>
         </HeaderContainer>
     )
 }
@@ -33,6 +38,30 @@ const HeaderContainer = styled.header`
         color: #333333;
         h1{
             font-size: 30px;
+        }
+    }
+    nav{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-left: 50px;
+    }
+    .userWrap{
+        display: flex;
+        margin-left: auto;
+        align-items: center;
+        gap: 12px;
+        button{
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        .loginBtn{
+            background: pink;
+        }
+        .logoutBtn{
+            background: lightgray;
         }
     }
 `
