@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { login } from '../api/firebase';
+import { logOut, login, onUserState } from '../api/firebase';
+import UserDatas from './UserDatas';
 
 function Nav() {
     const [user, setUser] = useState();
 
-    useEffect(()=>{
-        console.log(user)
-        setUser(user);
-    },[])
+    useEffect(() => {
+        onUserState((user) => {
+            console.log(user)
+            setUser(user);
+        })
+    }, [])
+    useEffect(() => {
+        onUserState(setUser);
+    }, [])
 
-    const userLogin = ()=>{
+    const userLogin = () => {
         login().then(setUser);
+    }
+    const userLogOut = () => {
+        logOut().then(setUser);
     }
     return (
         <HeaderContainer>
@@ -24,14 +33,18 @@ function Nav() {
                 <Link to='/products/new'>
                     신상품
                 </Link>
-                <Link to="/products">
-                    모든 상품
-                </Link>
+                {user && user.isAdmin && (
+                    <Link to="/products">
+                        모든 상품
+                    </Link>
+                )}
+
             </nav>
 
             <div className='userWrap'>
-                <button onClick={userLogin} className='loginBtn'>Login</button>
-                <button className='logoutBtn'>LogOut</button>
+                {user && <UserDatas user={user} />}
+                {!user && <button onClick={userLogin} className='loginBtn'>Login</button>}
+                {user && <button onClick={userLogOut} className='logoutBtn'>LogOut</button>}
             </div>
         </HeaderContainer>
     )
